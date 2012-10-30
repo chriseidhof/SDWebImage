@@ -74,5 +74,6 @@ extern NSString *const SDWebImageDownloadStopNotification;
 
 // This method is now no-op and is deprecated
 + (void)setMaxConcurrentDownloads:(NSUInteger)max __attribute__((deprecated));
++ (void)setDefaultHeader:(NSString *)header value:(NSString *)value;
 
 @end

@@ -76,7 +76,11 @@ NSString *const SDWebImageDownloadStopNotification = @"SDWebImageDownloadStopNot
 - (void)start
 {
     // In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:15];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:15];
+    NSMutableDictionary* headers = [SDWebImageDownloader defaultHeaders];
+    for(NSString* header in headers) {
+        [request addValue:headers[header] forHTTPHeaderField:header];
+    }
     self.connection = SDWIReturnAutoreleased([[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO]);
 
     // If not in low priority mode, ensure we aren't blocked by UI manipulations (default runloop mode for NSURLConnection is NSEventTrackingRunLoopMode)
@@ -279,5 +283,23 @@ NSString *const SDWebImageDownloadStopNotification = @"SDWebImageDownloadStopNot
     SDWISuperDealoc;
 }
 
+# pragma mark Default Headers
+
++ (NSMutableDictionary*)defaultHeaders {
+    static NSMutableDictionary* headers;
+    
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        headers = [[NSMutableDictionary alloc] init];
+    });
+    
+    return headers;
+}
+
++ (void)setDefaultHeader:(NSString *)header value:(NSString *)value {
+    NSMutableDictionary* headers = [self defaultHeaders];
+    headers[header] = value;
+}
 
 @end
