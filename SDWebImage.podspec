@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.platform = :ios
   s.license  = 'MIT'
   s.summary  = 'Asynchronous image downloader with cache support with an UIImageView category.'
-  s.homepage = 'https://github.com/rs/SDWebImage'
+  s.homepage = 'https://github.com/chriseidhof/SDWebImage'
   s.author   = { 'Olivier Poitrey' => 'rs@dailymotion.com' }
   s.source   = { :git => 'https://github.com/rs/SDWebImage.git', :tag => '2.7' }
 
